@@ -1,6 +1,7 @@
 import { HeroesComponent } from './heroes.component';
 import { Hero } from '../hero';
-import { of } from 'rxjs';
+import { of } from 'rxjs/internal/observable/of';
+
 
 describe('HeroesComponent', () => {
 
@@ -29,6 +30,15 @@ describe('HeroesComponent', () => {
 
       expect(component.heroes.length).toEqual(2);
       expect(component.heroes).not.toContain(HEROES[2]);
+    });
+
+    it('should call deleteHero with correct hero', () => {
+      mockHeroService.deleteHero.and.returnValue(of());
+      component.heroes = HEROES;
+
+      component.delete(HEROES[2]);
+
+      expect(mockHeroService.deleteHero).toHaveBeenCalledWith(HEROES[2]);
     });
   });
 });
